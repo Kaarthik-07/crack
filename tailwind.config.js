@@ -6,6 +6,7 @@ export default {
     extend: {
       fontFamily: {
         "bungee-shade": ['"Bungee Shade"', "cursive"],
+        vt323: ['"VT323"', "monospace"],
       },
     },
   },
