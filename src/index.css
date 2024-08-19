@@ -8,3 +8,8 @@
 html {
   scroll-behavior: smooth;
 }
+.gradient-text {
+  background: linear-gradient(90deg, #f97316 0%, #f43f5e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
