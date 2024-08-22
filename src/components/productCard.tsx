@@ -1,73 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useShoppingCart } from "../components/cartContext";
+import { itemCard } from "../data/items";
 
-const ProductCard = () => {
-  const [cart, setCart] = useState({});
+interface Product {
+  id: number;
+  imageSrc: string;
+  title: string;
+  price: number;
+  oldPrice?: number;
+  rating: number;
+  discount?: string;
+}
 
-  const addCartHandler = (index) => {
-    setCart((prevCart) => ({
-      ...prevCart,
-      [index]: prevCart[index] ? prevCart[index] + 1 : 1,
-    }));
-  };
+const ProductCard: React.FC = () => {
+  const {
+    increaseCartQuantity,
+    decreaseCartQuantity,
+    getItemQuantity,
+    cartItems,
+  } = useShoppingCart();
 
-  const incrementHandler = (index) => {
-    setCart((prevCart) => ({
-      ...prevCart,
-      [index]: prevCart[index] + 1,
-    }));
-  };
-
-  const decrementHandler = (index) => {
-    setCart((prevCart) => ({
-      ...prevCart,
-      [index]: prevCart[index] > 1 ? prevCart[index] - 1 : 1,
-    }));
-  };
-
-  const products = [
-    {
-      id: 0,
-      imageSrc: "/image.png",
-      title: "Sara Vedi Super 2500 - Red",
-      price: 449,
-      oldPrice: 699,
-      rating: 5,
-      discount: "39% OFF",
-    },
-    {
-      id: 1,
-      imageSrc: "/image.png",
-      title: "Sara Vedi Super 2000 - Blue",
-      price: 399,
-      oldPrice: 599,
-      rating: 3,
-      discount: "20% OFF",
-    },
-    {
-      id: 2,
-      imageSrc: "/image.png",
-      title: "Sara Vedi Super 1500 - Green",
-      price: 299,
-      oldPrice: 499,
-      rating: 4,
-      discount: "15% OFF",
-    },
-    {
-      id: 3,
-      imageSrc: "/image.png",
-      title: "Sara Vedi Super 1500 - Green",
-      price: 299,
-      oldPrice: 499,
-      rating: 2,
-      discount: "15% OFF",
-    },
-  ];
+  // Update localStorage whenever cartItems change
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+    console.log("Cart updated:", cartItems);
+  }, [cartItems]);
 
   return (
     <div className="grid gap-6 px-6 py-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
-      {products.map((product, index) => (
+      {itemCard.map((product) => (
         <div
-          key={index}
+          key={product.id}
           className="relative flex flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
         >
           <a
@@ -78,6 +41,8 @@ const ProductCard = () => {
               className="object-cover"
               src={product.imageSrc}
               alt="product image"
+              width="353px"
+              height="240"
             />
             {product.discount && (
               <span className="absolute top-0 left-0 m-2 rounded-full bg-black px-2 text-center text-sm font-medium text-white">
@@ -89,16 +54,19 @@ const ProductCard = () => {
             <a href="#">
               <h5 className="text-xl tracking-tight text-slate-900">
                 {product.title}
+                <span className="text-red-500">
+                  ({product.packCount})pcs/bag
+                </span>
               </h5>
             </a>
             <div className="mt-2 mb-5 flex items-center justify-between">
               <p>
                 <span className="text-3xl font-bold text-slate-900">
-                  ${product.price}
+                  ₹ {product.price}
                 </span>
                 {product.oldPrice && (
                   <span className="text-sm text-slate-900 line-through">
-                    ${product.oldPrice}
+                    ₹ {product.oldPrice}
                   </span>
                 )}
               </p>
@@ -111,10 +79,13 @@ const ProductCard = () => {
                 </span>
               </div>
             </div>
-            {cart[index] ? (
+            {getItemQuantity(product.id) > 0 ? (
               <div className="flex items-center justify-center space-x-2">
                 <button
-                  onClick={() => decrementHandler(index)}
+                  onClick={() => {
+                    decreaseCartQuantity(product.id);
+                    console.log(`Decreased quantity of product ${product.id}`);
+                  }}
                   className="px-3 py-2 bg-slate-900 text-white rounded-md hover:bg-gray-700"
                 >
                   -
@@ -122,11 +93,14 @@ const ProductCard = () => {
                 <input
                   type="text"
                   readOnly
-                  value={cart[index]}
+                  value={getItemQuantity(product.id)}
                   className="w-12 text-center border rounded-md"
                 />
                 <button
-                  onClick={() => incrementHandler(index)}
+                  onClick={() => {
+                    increaseCartQuantity(product.id);
+                    console.log(`Increased quantity of product ${product.id}`);
+                  }}
                   className="px-3 py-2 bg-slate-900 text-white rounded-md hover:bg-gray-700"
                 >
                   +
@@ -137,11 +111,12 @@ const ProductCard = () => {
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  addCartHandler(index);
+                  increaseCartQuantity(product.id);
+                  console.log(`Added product ${product.id} to cart`);
                 }}
                 className="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
               >
-                <img src="/cart.png" className="mr-2 h-6 w-6" />
+                <img src="/cart.png" className="mr-2 h-6 w-6" alt="cart" />
                 Add to cart
               </a>
             )}

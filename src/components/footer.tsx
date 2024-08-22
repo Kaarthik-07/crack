@@ -6,7 +6,7 @@ const Footer = () => {
           <div className="container flex flex-col flex-wrap px-5 py-24 mx-auto md:items-center lg:items-start md:flex-row md:flex-no-wrap">
             <div className="flex-shrink-0 w-64 mx-auto text-center md:mx-auto md:text-left lg:mx-auto">
               <a className="flex items-center justify-center font-medium text-gray-900 title-font md:justify-start">
-                <img src="/logo.png" className="w-10 h-10" alt="logo" />
+                {/* <img src="/logo.png" className="w-10 h-10" alt="logo" /> */}
               </a>
               <p className="mt-2 text-sm gradient-text">
                 Here’s Wishing You and Your Family a Sparkling Diwali!

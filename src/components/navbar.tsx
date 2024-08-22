@@ -1,11 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useShoppingCart } from "../components/cartContext";
+import SideCart from "../components/sideCart";
 
 const Nav = () => {
+  const { cartQuantity } = useShoppingCart(); // Access cartQuantity from context
   const [openProfile, setOpenProfile] = useState(false);
+  const [showCart, setShowCart] = useState(false);
+  const [localCartQuantity, setLocalCartQuantity] = useState(cartQuantity); // Local state for cart quantity
+
+  const handleShowCart = () => {
+    setShowCart((prevState) => !prevState); // Toggle cart visibility
+  };
 
   const toggleProfile = () => {
-    setOpenProfile(!openProfile);
+    setOpenProfile((prevState) => !prevState); // Toggle profile dropdown visibility
   };
+
+  useEffect(() => {
+    const updateCartQuantity = () => {
+      const cartItems =
+        JSON.parse(localStorage.getItem("cart") as string) || [];
+      const totalQuantity = cartItems.reduce(
+        (quantity: number, item: { quantity: number }) =>
+          quantity + item.quantity,
+        0
+      );
+      setLocalCartQuantity(totalQuantity); // Update local state
+    };
+
+    // Initial load
+    updateCartQuantity();
+
+    // Listen for storage changes (e.g., when another tab updates the cart)
+    window.addEventListener("storage", updateCartQuantity);
+
+    // Cleanup listener on component unmount
+    return () => {
+      window.removeEventListener("storage", updateCartQuantity);
+    };
+  }, []);
 
   return (
     <header className="bg-white">
@@ -28,14 +61,15 @@ const Nav = () => {
             <img
               src="/search.png"
               className="mr-2 w-[30px] h-[30px] cursor-pointer"
+              alt="search"
             />
           </div>
         </div>
 
         {/* Buttons - Hidden on small screens */}
         <nav className="hidden lg:flex-shrink-0 lg:block">
-          <ul className="flex items-center">
-            <li className="ml-4">
+          <div className="flex items-center">
+            <div className="ml-4">
               <a href="/">
                 <img
                   src="/heart.png"
@@ -43,19 +77,19 @@ const Nav = () => {
                   alt="heart"
                 />
               </a>
-            </li>
+            </div>
 
-            <li className="relative ml-4">
+            <button className="relative ml-4" onClick={handleShowCart}>
               <img
                 src="/cart_black.png"
                 className="w-[25px] h-[25px]"
                 alt="cart"
               />
-              <span className="absolute top-5 right-3 bg-red-500 text-white text-sm w-5 h-5 flex items-center justify-center rounded-full">
-                0
-              </span>
-            </li>
-          </ul>
+              <h1 className="absolute top-5 right-3 bg-red-500 text-white text-sm w-5 h-5 flex items-center justify-center rounded-full">
+                {localCartQuantity}
+              </h1>
+            </button>
+          </div>
         </nav>
 
         {/* Profile Icon - visible on all screens */}
@@ -64,44 +98,47 @@ const Nav = () => {
             <img
               src="/profile-user.png"
               className="w-[25px] h-[25px] ml-4 mt-2 text-gray-500"
+              alt="profile"
             />
           </button>
 
+          {showCart && <SideCart />}
+
           {openProfile && (
-            <ul className="absolute right-0 mt-4 w-48 bg-white rounded-md shadow-lg py-2 z-20 border border-black/5">
-              <li>
+            <div className="absolute right-0 mt-4 w-48 bg-white rounded-md shadow-lg py-2 z-20 border border-black/5">
+              <div>
                 <a
                   href="#"
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   My Orders
                 </a>
-              </li>
-              <li>
+              </div>
+              <div>
                 <a
                   href="#"
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   My Cart
                 </a>
-              </li>
-              <li>
+              </div>
+              <div>
                 <a
                   href="#"
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   Notifications
                 </a>
-              </li>
-              <li>
+              </div>
+              <div>
                 <a
                   href="#"
                   className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                 >
                   Logout
                 </a>
-              </li>
-            </ul>
+              </div>
+            </div>
           )}
         </div>
       </div>
