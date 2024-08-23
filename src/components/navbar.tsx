@@ -31,10 +31,8 @@ const Nav = () => {
     // Initial load
     updateCartQuantity();
 
-    // Listen for storage changes (e.g., when another tab updates the cart)
     window.addEventListener("storage", updateCartQuantity);
 
-    // Cleanup listener on component unmount
     return () => {
       window.removeEventListener("storage", updateCartQuantity);
     };
@@ -48,7 +46,9 @@ const Nav = () => {
 
         {/* Logo */}
         <div className="flex-shrink-0">
-          <h1 className="text-3xl">LOGO</h1>
+          <a href="/">
+            <h1 className="text-3xl cursor-pointer">LOGO</h1>
+          </a>
         </div>
 
         <div className="flex-grow mx-4 flex justify-center">

@@ -54,7 +54,7 @@ const ProductCard: React.FC = () => {
             <a href="#">
               <h5 className="text-xl tracking-tight text-slate-900">
                 {product.title}
-                <span className="text-red-500">
+                <span className="text-red-500 ml-2">
                   ({product.packCount})pcs/bag
                 </span>
               </h5>

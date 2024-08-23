@@ -6,7 +6,7 @@ const Home = () => {
       icon: (
         <img
           className="h-8 w-8 text-orange-500"
-          src="/orange_cart.png"
+          src="./orange_cart.png"
           alt="orange_cart"
         />
       ),
