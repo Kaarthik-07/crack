@@ -6,8 +6,12 @@ import Register from "./pages/register";
 import Product from "./pages/product";
 import Checkout from "./pages/checkout";
 import Admin from "./pages/admin";
+import AdminOrder from "./pages/adminOrder"; // Assuming you have this component
 import { ShoppingCartProvider } from "./components/cartContext";
 import MainLayout from "../src/components/layout";
+import AdminLayout from "./components/adminLayout"; // Import the new AdminLayout
+import AdminPending from "./pages/adminPending";
+import AdminChecked from "./pages/adminChecked";
 
 const mainRouter = createBrowserRouter([
   {
@@ -33,7 +37,7 @@ const mainRouter = createBrowserRouter([
         <Register />
       </MainLayout>
     ),
-  },
+ },
   {
     path: "/product",
     element: (
@@ -52,9 +56,38 @@ const mainRouter = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <Admin />,
+    element: (
+      <AdminLayout>
+        <Admin />
+      </AdminLayout>
+    ),
   },
-  // add more routes here
+  {
+    path: "/admin/order",
+    element: (
+      <AdminLayout>
+        <AdminOrder />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/admin/pending",
+    element: (
+      <AdminLayout>
+        <AdminPending />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/admin/checked",
+
+    element: (
+      <AdminLayout>
+        <AdminChecked />
+      </AdminLayout>
+    ),
+  },
+  // Add more admin-related routes here, all wrapped in AdminLayout
 ]);
 
 const App: React.FC = () => {

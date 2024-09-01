@@ -11,7 +11,7 @@ export const itemCard = [
   },
   {
     id: 1,
-    imageSrc: "/pack.jpg",
+    imageSrc: "/image.png",
     title: "Sara Vedi Super 2000 - Blue",
     price: 399,
     oldPrice: 599,
@@ -21,7 +21,7 @@ export const itemCard = [
   },
   {
     id: 2,
-    imageSrc: "/pack2.jpg",
+    imageSrc: "/image.png",
     title: "Sara Vedi Super 1500 - Green",
     price: 299,
     oldPrice: 499,

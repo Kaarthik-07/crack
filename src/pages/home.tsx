@@ -1,6 +1,9 @@
 import ProductCard from "../components/productCard";
 
 const Home = () => {
+  // const pushCategory = () =>{
+  //   window.location.href = 'https://localhost:5173/category'
+  // }
   const infoItems = [
     {
       icon: (
@@ -62,7 +65,7 @@ const Home = () => {
         </div>
         <div className="flex justify-end -mt-4">
           <a
-            href="/category"
+            href= '/category'  
             className="text-center text-black font-bold text-md hover:underline "
             style={{ transform: "translateY(-150%)" }}
           >

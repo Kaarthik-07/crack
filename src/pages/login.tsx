@@ -8,6 +8,10 @@ const Login = () => {
   };
 
   return (
+    <>
+    <div className="mr-14 flex justify-end">
+      <h1 className="font-vt323 text-2xl">ADMIN</h1>
+    </div>
     <div className="w-full bg-gray-100 min-h-screen flex items-center justify-center">
       <div className="max-w-md w-full p-6">
         <h1 className="text-3xl font-semibold mb-6 text-black text-center">
@@ -67,6 +71,7 @@ const Login = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

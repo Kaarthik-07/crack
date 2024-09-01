@@ -13,15 +13,49 @@ interface CartItem {
 }
 
 const Checkout = () => {
-  // State to get checkout items from local storage
   const [getCart, setGetCart] = useState<CartItem[]>([]);
   const { increaseCartQuantity, decreaseCartQuantity, getItemQuantity } =
     useShoppingCart();
+  
+  // State variables for pincode, state, and district
+  const [pincode, setPincode] = useState<string>("");
+  const [state, setState] = useState<string>("");
+  const [district, setDistrict] = useState<string>("");
 
   useEffect(() => {
     const items = JSON.parse(localStorage.getItem("cart") as string) || [];
     setGetCart(items);
   }, []);
+
+  const handlePincodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPincode(e.target.value);
+  };
+
+  const handlePincodeKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      if (pincode.length === 6) {
+        fetch(`https://api.postalpincode.in/pincode/${pincode}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data[0].Status === "Success") {
+              const { State, District } = data[0].PostOffice[0];
+              setState(State);
+              setDistrict(District);
+            } else {
+              setState("");
+              setDistrict("");
+            }
+          })
+          .catch(() => {
+            setState("");
+            setDistrict("");
+          });
+      } else {
+        setState("");
+        setDistrict("");
+      }
+    }
+  };
 
   return (
     <>
@@ -184,18 +218,25 @@ const Checkout = () => {
                 <input
                   type="text"
                   name="state"
+                  value={state}
                   className="w-1/3 rounded-md border border-gray-200 px-2 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                   placeholder="State"
+                  disabled={!pincode}
                 />
                 <input
                   type="text"
                   name="district"
+                  value={district}
                   className="w-1/3 rounded-md border border-gray-200 px-2 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                   placeholder="District"
+                  disabled={!pincode}
                 />
                 <input
                   type="text"
                   name="pincode"
+                  value={pincode}
+                  onChange={handlePincodeChange}
+                  onKeyDown={handlePincodeKeyDown}
                   className="w-1/3 rounded-md border border-gray-200 px-2 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                   placeholder="Pincode"
                 />
