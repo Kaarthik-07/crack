@@ -65,7 +65,7 @@ const Home = () => {
         </div>
         <div className="flex justify-end -mt-4">
           <a
-            href= '/category'  
+            href= '/viewAll'  
             className="text-center text-black font-bold text-md hover:underline "
             style={{ transform: "translateY(-150%)" }}
           >
@@ -73,7 +73,8 @@ const Home = () => {
           </a>
         </div>
       </div>
-
+      <div>
+      </div>
       <div className="flex justify-center items-center min-h-screen">
         <ProductCard />
       </div>

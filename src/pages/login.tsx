@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const navigate = useNavigate(); // Initialize the hook
 
-  const handleLogin = (e) => {
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     navigate("/");
   };
@@ -17,7 +17,6 @@ const Login = () => {
         <h1 className="text-3xl font-semibold mb-6 text-black text-center">
           Login
         </h1>
-
         <form
           action="#"
           method="POST"

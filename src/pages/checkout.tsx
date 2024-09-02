@@ -17,7 +17,6 @@ const Checkout = () => {
   const { increaseCartQuantity, decreaseCartQuantity, getItemQuantity } =
     useShoppingCart();
   
-  // State variables for pincode, state, and district
   const [pincode, setPincode] = useState<string>("");
   const [state, setState] = useState<string>("");
   const [district, setDistrict] = useState<string>("");
@@ -41,6 +40,9 @@ const Checkout = () => {
               const { State, District } = data[0].PostOffice[0];
               setState(State);
               setDistrict(District);
+              console.log(state)
+              console.log(district)
+              // console.log(PostOffice)
             } else {
               setState("");
               setDistrict("");

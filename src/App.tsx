@@ -12,6 +12,7 @@ import MainLayout from "../src/components/layout";
 import AdminLayout from "./components/adminLayout"; // Import the new AdminLayout
 import AdminPending from "./pages/adminPending";
 import AdminChecked from "./pages/adminChecked";
+import ViewAllPages from "./pages/viewAllPages";
 
 const mainRouter = createBrowserRouter([
   {
@@ -63,6 +64,14 @@ const mainRouter = createBrowserRouter([
     ),
   },
   {
+    path:'/viewAll',
+    element:(
+      <MainLayout>
+        <ViewAllPages />
+      </MainLayout>
+    )
+  },
+  {
     path: "/admin/order",
     element: (
       <AdminLayout>
@@ -87,6 +96,7 @@ const mainRouter = createBrowserRouter([
       </AdminLayout>
     ),
   },
+  {}
   // Add more admin-related routes here, all wrapped in AdminLayout
 ]);
 
