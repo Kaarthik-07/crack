@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { itemCard } from "../data/items";
 import { useShoppingCart } from "../components/cartContext";
+import { useNavigate } from "react-router-dom";
 
 export function SideCart() {
+  const navigate = useNavigate();
   const { removeFromCart, closeCart } = useShoppingCart();
   //@ts-ignore
   const [getcart, setGetCart] = useState<CartItem[]>([]);
@@ -33,6 +35,12 @@ export function SideCart() {
       closeCart(); // Assuming closeCart function is available from context
     }
   };
+  const checkToken = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    }
+  }
 
   return (
     <div
@@ -129,6 +137,7 @@ export function SideCart() {
                     <a
                       href="/checkout"
                       className="flex items-center justify-center rounded-md border border-transparent bg-black px-6 py-3 text-2xl font-medium text-white shadow-sm hover:bg-indigo-700"
+                      onClick={checkToken}
                     >
                       Checkout
                     </a>

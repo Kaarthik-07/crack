@@ -1,11 +1,24 @@
+import axios from "axios";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+interface FormData {
+  email: string;
+  password: string;
+}
 const Login = () => {
   const navigate = useNavigate(); // Initialize the hook
-
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    navigate("/");
-  };
+  const [formaData,setFormData] = useState<FormData>({email:"",password:""});
+  const handleLogin = async() =>{
+    try{
+      const result = await axios.post('http://localhost:6969/user/siginin')
+      
+    }catch(err){
+      console.log(err)
+    }finally{
+      
+    }
+  }
 
   return (
     <>

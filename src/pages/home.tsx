@@ -1,9 +1,7 @@
 import ProductCard from "../components/productCard";
 
 const Home = () => {
-  // const pushCategory = () =>{
-  //   window.location.href = 'https://localhost:5173/category'
-  // }
+  
   const infoItems = [
     {
       icon: (
@@ -75,8 +73,15 @@ const Home = () => {
       </div>
       <div>
       </div>
+      <div>
       <div className="flex justify-center items-center min-h-screen">
         <ProductCard />
+      </div>
+        <h1 className="container mx-auto px-4 py-8 mt-24 flex justify-end items-center">
+            <a href="/viewAll" className="text-center text-black font-vt323 text-5xl hover:underline">
+              More Crackers
+            </a>
+        </h1>
       </div>
     </>
   );

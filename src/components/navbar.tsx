@@ -2,20 +2,45 @@ import React, { useEffect, useState } from "react";
 import { useShoppingCart } from "../components/cartContext";
 import SideCart from "../components/sideCart";
 
-const Nav = () => {
+const Nav: React.FC = () => {
   const { cartQuantity } = useShoppingCart(); // Access cartQuantity from context
   const [openProfile, setOpenProfile] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const [localCartQuantity, setLocalCartQuantity] = useState(cartQuantity); // Local state for cart quantity
 
+  // Logout function
+  const Logout = async () => {
+    try {
+      const response = await fetch("http://localhost:6969/user/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("userToken")}`, // Ensure the token key matches
+        },
+      });
+
+      if (response.ok) {
+        localStorage.removeItem("userToken"); // Remove token from local storage
+        window.location.href = "/"; // Redirect to home page
+      } else {
+        console.error("Failed to log out");
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  // Toggle cart visibility
   const handleShowCart = () => {
-    setShowCart((prevState) => !prevState); // Toggle cart visibility
+    setShowCart((prevState) => !prevState);
   };
 
+  // Toggle profile dropdown visibility
   const toggleProfile = () => {
-    setOpenProfile((prevState) => !prevState); // Toggle profile dropdown visibility
+    setOpenProfile((prevState) => !prevState);
   };
 
+  // Update local cart quantity from local storage
   useEffect(() => {
     const updateCartQuantity = () => {
       const cartItems =
@@ -25,12 +50,13 @@ const Nav = () => {
           quantity + item.quantity,
         0
       );
-      setLocalCartQuantity(totalQuantity); // Update local state
+      setLocalCartQuantity(totalQuantity);
     };
 
     // Initial load
     updateCartQuantity();
 
+    // Add event listener for storage changes
     window.addEventListener("storage", updateCartQuantity);
 
     return () => {
@@ -134,6 +160,7 @@ const Nav = () => {
                 <a
                   href="#"
                   className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                  onClick={Logout}
                 >
                   Logout
                 </a>
